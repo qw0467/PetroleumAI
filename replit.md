@@ -27,6 +27,7 @@ Preferred communication style: Simple, everyday language.
 - `model.py` - Isolation Forest anomaly detection implementation
 - `kpis.py` - Equipment health metrics and status calculations
 - `visualize.py` - Matplotlib/Seaborn chart generation with interactive toggles
+- `root_cause.py` - Gap analysis and root cause identification for equipment failures
 
 ### Machine Learning Architecture
 **Decision**: Isolation Forest for unsupervised anomaly detection  
@@ -60,6 +61,7 @@ Preferred communication style: Simple, everyday language.
 - `processed_data` - Data with engineered features and anomaly scores
 - `kpis` - Computed key performance indicators
 - `thresholds` - Anomaly detection thresholds
+- `root_cause_results` - Results from root cause analysis
 
 ### Data Input Strategy
 **Decision**: Dual-mode data ingestion (simulated + CSV upload)  
