@@ -1,122 +1,202 @@
-# PetroleumAI - Predictive Maintenance Dashboard
+# PetroleumAI — Real-Time Anomaly Detection & Predictive Maintenance System
 
-A predictive maintenance MVP for petroleum plant equipment using multivariate time-series analysis and machine learning anomaly detection.
+A real-time anomaly detection and predictive maintenance system for mission-critical industrial and scientific infrastructure using multivariate time-series analysis and machine learning.
+
+---
 
 ## Overview
 
-PetroleumAI monitors sensor data from petroleum equipment (pressure, temperature, flow, vibration) and uses Isolation Forest anomaly detection to identify potential equipment issues before they cause failures.
+PetroleumAI is an operator-facing monitoring and diagnostics platform designed for environments that require **continuous 24/7 uptime**, rapid fault detection, and clear engineering-style explanations.
 
-## Features
+The system ingests multivariate sensor data (pressure, temperature, flow, vibration), performs feature engineering on streaming signals, and applies machine-learning-based anomaly detection to identify early warning signs of equipment degradation — before failures occur.
 
-- **Real-time KPI Monitoring**: Track equipment health status, anomaly scores, and risk levels
-- **Anomaly Detection**: Isolation Forest algorithm identifies abnormal patterns in sensor data
-- **Feature Engineering**: Automated computation of rolling statistics, trend analysis, spike and drift detection
-- **Root Cause Analysis**: Identify what went wrong, when abnormalities started, and generate engineering-style diagnostic reports
-- **Interactive Visualizations**: Toggle overlays for anomalies, drift regions, and spikes
-- **Data Export**: Download processed data with all computed features
+While inspired by industrial petroleum systems, the architecture and methodology are directly applicable to **large-scale scientific and operational facilities**, including power systems, cooling plants, cryogenics, and compute infrastructure.
 
-## Project Structure
+---
 
-```
+## Why This Project
+
+Large technical facilities operate under strict uptime and safety requirements.  
+In these environments, failures are rarely sudden — they are preceded by subtle signal changes:
+
+- slow sensor drift  
+- increasing variance  
+- abnormal correlations  
+- early trend reversals  
+
+This project was built to prototype an **early-warning and diagnostic system** that focuses on:
+
+- Continuous monitoring  
+- Rapid fault identification  
+- Interpretable results for operators  
+- Engineering-style explanations, not just model scores  
+
+The goal is not only to detect anomalies, but to **explain what changed, when it changed, and why it matters.**
+
+---
+
+## Key Capabilities
+
+- **Real-Time KPI Monitoring**  
+  Track equipment health, anomaly scores, risk levels, and system stability.
+
+- **Machine-Learning Anomaly Detection**  
+  Isolation Forest detects abnormal behavior in high-dimensional sensor data.
+
+- **Advanced Feature Engineering**  
+  Automated computation of:
+  - rolling statistics  
+  - trend slopes  
+  - spike detection  
+  - drift indicators  
+  - cross-sensor correlations  
+
+- **Root Cause Analysis**  
+  Engineering-style diagnostics to identify:
+  - first abnormal signal  
+  - warning lead time  
+  - dominant causal sensors  
+  - breakdowns in normal operating relationships  
+
+- **Interactive Visualization**  
+  Operator dashboard with overlays for:
+  - anomalies  
+  - drift regions  
+  - spikes  
+  - risk zones  
+
+- **Exportable Engineering Reports**  
+  Generate structured diagnostic summaries for incident review and post-mortems.
+
+---
+
+## System Architecture
 petroleumai/
-├── data/           # Data storage
+├── data/ # Data storage
 ├── src/
-│   ├── simulate.py  # Sensor data simulation
-│   ├── features.py  # Feature engineering
-│   ├── model.py     # Anomaly detection model
-│   ├── kpis.py      # KPI calculations
-│   ├── visualize.py # Visualization functions
-│   └── root_cause.py # Root cause analysis module
-├── app.py          # Main Streamlit dashboard
-└── README.md       # This file
-```
+│ ├── simulate.py # Sensor data simulation
+│ ├── features.py # Feature engineering pipeline
+│ ├── model.py # Anomaly detection (Isolation Forest)
+│ ├── kpis.py # Health & risk metric computation
+│ ├── visualize.py # Plotting and dashboard utilities
+│ └── root_cause.py # Diagnostic & root cause analysis
+├── app.py # Streamlit operator dashboard
+└── README.md
 
-## Usage
+---
 
-### Running the Dashboard
+## Running the System
 
-The application runs on port 5000:
+### 1. Install dependencies
 
-```bash
+pip install -r requirements.txt
+### 2. Launch the dashboard
 streamlit run app.py --server.port 5000
-```
+The dashboard will open automatically in your browser.
+---
+## Data Input Options
 
-### Data Input Options
+### 1.Simulated Sensor Data
+Generate synthetic operational data with configurable noise, drift, and fault scenarios.
+### 2.CSV Upload
+Upload your own dataset with the following columns:
+timestamp, pressure, temperature, flow, vibration
+---
+## Operational Metrics
 
-1. **Simulated Data**: Generate synthetic sensor readings with configurable parameters
-2. **Upload CSV**: Upload your own data with columns: `timestamp`, `pressure`, `temperature`, `flow`, `vibration`
+### Equipment Health
+Overall system status: Normal / Warning / Critical
+### Anomaly Score
+Normalized 0–1 scale representing abnormality level
+### Irregular Events
+Count of detected anomaly points
+### Risk Level
+Composite risk derived from:
+health status
+anomaly density
+drift persistence
 
-### Key Metrics
-
-- **Equipment Health**: Overall health status (Normal/Warning/Critical)
-- **Anomaly Score**: Current anomaly score (0-1 scale)
-- **Irregular Events**: Count of detected anomalies
-- **Risk Level**: Computed risk based on health, anomalies, and drift
-- **Drift Detection**: Per-sensor drift monitoring
-
+### Drift Detection
+Continuous per-sensor monitoring for slow degradation patterns
+---
 ## Root Cause Analysis
+The Root Cause Analysis module performs structured diagnostics to explain how and why anomalies emerged.
 
-The Root Cause Analysis module performs gap analysis to identify what caused equipment anomalies and potential shutdowns.
+### What It Determines
+### 1. First Abnormality Detection
+Identifies the earliest sensor deviation and its timestamp.
 
-### What It Analyzes
+### 2. Warning Lead Time
+Measures how far in advance early indicators appeared before a shutdown-level event.
 
-1. **First Abnormality Detection**: Identifies which sensor first showed abnormal behavior and the exact timestamp
-2. **Warning Lead Time**: Calculates how far before the shutdown event the first warning appeared
-3. **Sensor Contribution Ranking**: Ranks sensors by their contribution to anomaly scores
-4. **Baseline Comparison**: Compares abnormal regions to normal operation:
-   - Mean deviation percentage
-   - Variability increase
-   - Trend reversals
-5. **Correlation Breakdown**: Detects loss of normal operational relationships between sensors
+### 3. Sensor Contribution Ranking
+Quantifies each sensor’s influence on anomaly scores.
 
-### Using Root Cause Analysis
+### 4. Baseline Comparison
+Compares abnormal operation to normal conditions:
+mean deviation
+variability increase
+trend reversals
 
-1. Load data (simulated or uploaded)
-2. Navigate to the "Root Cause Analysis" tab
-3. Configure shutdown event selection:
-   - **Auto-detect**: Automatically finds shutdown events in the data
-   - **Select manually**: Choose a specific timestamp
-   - **Use last timestamp**: Use the last data point as reference
-4. Click "Run Root Cause Analysis"
+### 5. Correlation Breakdown
+Detects loss of normal relationships between sensors.
+---
+## Root Cause Workflow
+### 1. Load data (simulated or uploaded)
+### 2. Navigate to Root Cause Analysis tab
+### 3. Select shutdown reference:
+Auto-detect
+Manual timestamp
+Last datapoint
+### 4. Run analysis
+--- 
 
-### Output
-
-- **Key Findings**: First abnormality time, warning lead time, primary causal sensor
-- **Sensor Contribution Ranking**: Table showing each sensor's contribution score
-- **Baseline Comparison**: Table with deviation and variability metrics
-- **Pattern Summary**: Detected abnormal patterns (drift, spikes, trend reversals)
-- **Root Cause Explanation**: Engineering-style narrative explaining the failure sequence
-- **Full Engineering Report**: Downloadable detailed diagnostic report
-
-### Example Output
-
-> "The equipment issue was first detected at 2024-01-01 14:32:00, approximately 45 minutes before the shutdown event. The initial drift was observed in the pressure sensor. The primary contributing factor was pressure, which deviated 35% above baseline with 28% increased variability. Additional contributing factors included: flow, temperature. Trend reversals were observed in pressure, suggesting a fundamental change in equipment behavior."
-
-## Technical Details
-
+## Example Diagnostic Output
+“The first abnormal behavior was detected at 2024-01-01 14:32:00, approximately 45 minutes before the shutdown event.
+Initial drift was observed in the pressure sensor. Pressure deviated 35% above baseline with a 28% increase in variability, indicating progressive system instability.
+Secondary contributing factors included flow and temperature.
+Trend reversals in pressure suggest a fundamental change in equipment behavior prior to failure.”
+--- 
+## Technical Approach
 ### Anomaly Detection
-
-Uses scikit-learn's Isolation Forest algorithm:
-- Contamination parameter controls expected anomaly rate
-- Features normalized using StandardScaler
-- Scores normalized to 0-1 range
-
-### Feature Engineering
-
-For each sensor:
-- Rolling mean and standard deviation (20-point window)
-- Slope/trend calculation
-- Spike detection using z-score method
-- Drift detection comparing rolling to overall mean
-- Cross-correlation between sensor pairs
-- Instability score based on variance changes
-
+Algorithm: Isolation Forest
+Feature scaling: StandardScaler
+Scores normalized to a 0–1 operational scale
+Contamination parameter controls expected anomaly rate
+--- 
+## Feature Engineering
+### For each sensor stream:
+Rolling mean and standard deviation
+Trend slope estimation
+Spike detection via z-score
+Drift detection using rolling vs global baselines
+Cross-correlation between sensor pairs
+Instability scoring based on variance changes
+--- 
+## Design Philosophy
+This system prioritizes:
+Interpretability over black-box predictions
+Early warning over post-failure analysis
+Operator usability over raw model complexity
+System thinking over isolated metrics
+The focus is on delivering actionable operational insight, not just machine-learning output.
+--- 
 ## Dependencies
+streamlit
+pandas
+numpy
+scikit-learn
+scipy
+matplotlib
+seaborn
+--- 
+## Future Work
+Streaming ingestion (Kafka / WebSockets)
+Model drift monitoring
+Multi-model ensemble detection
+Fault classification
+Deployment via Docker for edge environments
 
-- streamlit
-- pandas
-- numpy
-- scikit-learn
-- scipy
-- matplotlib
-- seaborn
+## Author
+## Muhammad Qasim Ayyaz
+## Applied AI Engineer — Real-Time Systems & Operational Analytics
